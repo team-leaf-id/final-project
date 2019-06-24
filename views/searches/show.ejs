@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layout/head')%>
+<body>
+  <%- include('../layout/header')%>
+  <main>
+    <ul>
+      <% results.forEach(plant => { %>
+        <div>
+          <li class="name"><%= plant.common_name %></li>
+          <li class="id"><%= plant.id %></li>
+          <li class="link"><%= plant.link %></li>
+        </div>
+      <% }) %>
+    </ul>
+
+
+
+
+
+    
+  </main>
+  <%- include('../layout/footer')%>
+</body>
+</html>

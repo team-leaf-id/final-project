@@ -1,0 +1,178 @@
+[
+  {
+      "slug": "clinopodium-ascendens",
+      "scientific_name": "Clinopodium ascendens",
+      "link": "http://trefle.io/api/plants/122041",
+      "id": 122041,
+      "complete_data": false,
+      "common_name": "ascending wild basil"
+  },
+  {
+      "slug": "clinopodium-gracile",
+      "scientific_name": "Clinopodium gracile",
+      "link": "http://trefle.io/api/plants/122075",
+      "id": 122075,
+      "complete_data": false,
+      "common_name": "slender wild basil"
+  },
+  {
+      "slug": "acinos-arvensis",
+      "scientific_name": "Acinos arvensis",
+      "link": "http://trefle.io/api/plants/102133",
+      "id": 102133,
+      "complete_data": false,
+      "common_name": "basil thyme"
+  },
+  {
+      "slug": "ocimum-canum",
+      "scientific_name": "Ocimum canum",
+      "link": "http://trefle.io/api/plants/159561",
+      "id": 159561,
+      "complete_data": false,
+      "common_name": "hoary basil"
+  },
+  {
+      "slug": "ocimum",
+      "scientific_name": "Ocimum",
+      "link": "http://trefle.io/api/plants/159556",
+      "id": 159556,
+      "complete_data": false,
+      "common_name": "basil"
+  },
+  {
+      "slug": "ocimum-basilicum",
+      "scientific_name": "Ocimum basilicum",
+      "link": "http://trefle.io/api/plants/159557",
+      "id": 159557,
+      "complete_data": false,
+      "common_name": "sweet basil"
+  },
+  {
+      "slug": "clinopodium-vulgare",
+      "scientific_name": "Clinopodium vulgare",
+      "link": "http://trefle.io/api/plants/122078",
+      "id": 122078,
+      "complete_data": false,
+      "common_name": "wild basil"
+  },
+  {
+      "slug": "crataegus-basilica",
+      "scientific_name": "Crataegus basilica",
+      "link": "http://trefle.io/api/plants/124352",
+      "id": 124352,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "ocimum-tenuiflorum",
+      "scientific_name": "Ocimum tenuiflorum",
+      "link": "http://trefle.io/api/plants/159565",
+      "id": 159565,
+      "complete_data": false,
+      "common_name": "holy basil"
+  },
+  {
+      "slug": "fissidens-subbasilaris",
+      "scientific_name": "Fissidens subbasilaris",
+      "link": "http://trefle.io/api/plants/137343",
+      "id": 137343,
+      "complete_data": false,
+      "common_name": "fissidens moss"
+  },
+  {
+      "slug": "opuntia-basilaris",
+      "scientific_name": "Opuntia basilaris",
+      "link": "http://trefle.io/api/plants/160504",
+      "id": 160504,
+      "complete_data": false,
+      "common_name": "beavertail pricklypear"
+  },
+  {
+      "slug": "ocimum-campechianum",
+      "scientific_name": "Ocimum campechianum",
+      "link": "http://trefle.io/api/plants/159559",
+      "id": 159559,
+      "complete_data": false,
+      "common_name": "least basil"
+  },
+  {
+      "slug": "viguiera-nudibasilaris",
+      "scientific_name": "Viguiera nudibasilaris",
+      "link": "http://trefle.io/api/plants/247686",
+      "id": 247686,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "hieracium-basileucum",
+      "scientific_name": "Hieracium basileucum",
+      "link": "http://trefle.io/api/plants/265337",
+      "id": 265337,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "erigeron-basilobatus",
+      "scientific_name": "Erigeron basilobatus",
+      "link": "http://trefle.io/api/plants/268717",
+      "id": 268717,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "artemisia-basilica",
+      "scientific_name": "Artemisia basilica",
+      "link": "http://trefle.io/api/plants/275052",
+      "id": 275052,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "callichilia-basileis",
+      "scientific_name": "Callichilia basileis",
+      "link": "http://trefle.io/api/plants/218306",
+      "id": 218306,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "mitrephora-basilanensis",
+      "scientific_name": "Mitrephora basilanensis",
+      "link": "http://trefle.io/api/plants/208710",
+      "id": 208710,
+      "complete_data": false,
+      "common_name": null
+  },
+  {
+      "slug": "monarda-clinopodioides",
+      "scientific_name": "Monarda clinopodioides",
+      "link": "http://trefle.io/api/plants/157359",
+      "id": 157359,
+      "complete_data": false,
+      "common_name": "basil beebalm"
+  },
+  {
+      "slug": "ocimum-kilimandscharicum",
+      "scientific_name": "Ocimum kilimandscharicum",
+      "link": "http://trefle.io/api/plants/159564",
+      "id": 159564,
+      "complete_data": false,
+      "common_name": "hoary basil"
+  },
+  {
+      "slug": "ocimum-gratissimum",
+      "scientific_name": "Ocimum gratissimum",
+      "link": "http://trefle.io/api/plants/159562",
+      "id": 159562,
+      "complete_data": false,
+      "common_name": "African basil"
+  },
+  {
+      "slug": "pycnanthemum-clinopodioides",
+      "scientific_name": "Pycnanthemum clinopodioides",
+      "link": "http://trefle.io/api/plants/172564",
+      "id": 172564,
+      "complete_data": false,
+      "common_name": "basil mountainmint"
+  }
+]
