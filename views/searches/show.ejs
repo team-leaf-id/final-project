@@ -7,17 +7,14 @@
     <ul>
       <% results.forEach(plant => { %>
         <div>
-          <li class="name"><%= plant.common_name %></li>
-          <li class="id"><%= plant.id %></li>
-          <li class="link"><%= plant.link %></li>
+          <li class="common_name"><%= plant.common_name %></li>
+          <li class="scientific_name"><%= plant.scientific_name %></li>
+          <li class="toxicity">Toxicity: <%= plant.toxicity %></li>
+          <li class="lifespan">Lifespan: <%= plant.lifespan %></li>
+          <li class="growth_period">Growth period: <%= plant.growth_period %></li>
         </div>
       <% }) %>
     </ul>
-
-
-
-
-
     
   </main>
   <%- include('../layout/footer')%>

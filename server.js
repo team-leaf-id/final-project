@@ -11,7 +11,7 @@ const pg = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database Setup
+// Database Setup TODO: COMMENTED OUT UNTIL WE NEED DATABASES
 // const client = new pg.Cient(process.env.DATABASE_URL);
 // client.connect();
 // client.on('error', err => console.error(err));
@@ -36,33 +36,36 @@ function renderHomePage(request, response){
 function searchForPlants(request, response){
   let url = `http://trefle.io/api/plants/?token=${process.env.PLANT_KEY}&q=${request.body.search}`;
 
-  // console.log('request: ', request.body);
-  // console.log('URL: ', url);
-
   superagent.get(url)
-    // .then(apiResponse => {
-    //   console.log('RESPONSE BODY', apiResponse.body);
-    //   apiResponse.body.map(plantResult => {
-    //     // console.log('RESPONSE', apiResponse);
-    //     let plantArray = new Plant(plantResult);
-    //     return plantArray;
-    //   })})
-    .then(results => {
-      console.log('RESPONSE BODY>>>>>>>>>>>>', results.body);
-      response.render('searches/show', {results: results.body})})
+    .then(results => getPlantDetails(results.body))
+    // .then(results => response.render('searches/show', {results: results})) TODO: COMMENTED OUT FOR NOW, NOT RENDERING UNTIL I CAN FIGURE OUT EXACTLY IF THE CONSTRUCTOR FUNCTION ETC WORKS
     .catch(error => handleError(error, response));
+}
+
+function getPlantDetails(results){
+  let plantArray = [];
+  results.map(plant => {
+    let url = `https://trefle.io//api/plants/${plant.id}?token=${process.env.PLANT_KEY}`;
+
+    superagent.get(url)
+      .then(results => new Plant(results.body))
+      .then(plants => plantArray.push(plants));
+  });
+  console.log('PLANT ARRAY>>>>>>', plantArray); // TODO: THIS IS RETURNING AN EMPTY ARRAY. CAN ANYONE SEE WHY?
 }
 
 // Constructor Function
 function Plant(result){
   this.common_name = result.common_name ? result.common_name : 'No common name available';
-  this.id = result.id ? result.id : 'No id available';
-  this.link = result.link? result.link : 'No link available';
+  this.scientific_name = result.scientific_name ? result.scientific_name : 'No id available';
+  this.toxicity = result.main_species.specifications.toxicity? result.main_species.specifications.toxicity : 'Unknown';
+  this.lifespan = result.main_species.specifications.lifespan? result.main_species.specifications.lifespan : 'Unknown';
+  this.growth_period = result.main_species.specifications.growth_period? result.main_species.specifications.growth_period : 'Unknown';
 }
 
 function handleError(error, response){
   console.error(error);
-  response.status(500).send('Sorry, something went wrong')
+  response.status(500).send('Sorry, something went wrong');
 }
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
