@@ -81,11 +81,11 @@ function getFish(request, response){
 // }
 
 // Constructor Function
-// function Fish(result){
-//   this.location = result.object.location ? result.object.location : 'No common name available';
-//   this.id = result.id ? result.id : 'No id available';
-//   this.link = result.link? result.link : 'No link available';
-// }
+function Fish(result){
+  this.species_name = result.object.location ? result.object.location : 'No common name available';
+  this.id = result.id ? result.id : 'No id available';
+  this.link = result.link? result.link : 'No link available';
+}
 
 function handleError(error, response){
   console.error(error);
