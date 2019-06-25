@@ -12,9 +12,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Database Setup
-// const client = new pg.Cient(process.env.DATABASE_URL);
-// client.connect();
-// client.on('error', err => console.error(err));
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+client.on('error', err => console.error(err));
 
 // Application Middleware
 app.use(express.urlencoded({extended: true}));
@@ -25,34 +25,60 @@ app.set('view engine', 'ejs');
 
 // API Routes
 app.get('/', renderHomePage);
-app.post('/searches', searchForPlants);
+app.post('/searches', getFish);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
 function renderHomePage(request, response){
+  getFish(request, response);
   response.render('pages/index');
 }
 
-function searchForPlants(request, response){
-  let url = `https://www.fishwatch.gov/api/species`;
-
-  // console.log('request: ', request.body);
-  // console.log('URL: ', url);
+function getFish(request, response){
+  const url = `https://www.fishwatch.gov/api/species`;
 
   superagent.get(url)
-    // .then(apiResponse => {
-    //   console.log('RESPONSE BODY', apiResponse.body);
-    //   apiResponse.body.map(plantResult => {
-    //     // console.log('RESPONSE', apiResponse);
-    //     let plantArray = new Plant(plantResult);
-    //     return plantArray;
-    //   })})
     .then(results => {
-      console.log('RESPONSE BODY>>>>>>>>>>>>', results.body);
-      response.render('searches/show', {results: results.body})})
+      results.body.map(fish => {
+        const insertSQL = `INSERT INTO fish (species_name, species_aliases, path) VALUES
+        ('${fish['Species Name']}', '${fish['Species Aliases']}', '${fish['Path']}');`;
+        return client.query(insertSQL);
+      })
+    })
     .catch(error => handleError(error, response));
-
 }
+
+// function cacheWeather(weather, client, locationId) {
+//   // the time this function was called
+//   let createdAt = new Date().valueOf();
+
+//   const insertSQL = `INSERT INTO weathers (forecast, time, created_at, location_id) VALUES 
+//     ('${weather.forecast}', '${weather.time}', ${createdAt}, ${locationId});`;
+//   return client.query(insertSQL).then(results => {
+//     return results;
+//   });
+// }
+
+// function getFish(request, response){
+//   let url = `https://www.fishwatch.gov/api/species`;
+
+//   // console.log('request: ', request.body);
+//   // console.log('URL: ', url);
+
+//   superagent.get(url)
+//     // .then(apiResponse => {
+//     //   console.log('RESPONSE BODY', apiResponse.body);
+//     //   apiResponse.body.map(plantResult => {
+//     //     // console.log('RESPONSE', apiResponse);
+//     //     let plantArray = new Plant(plantResult);
+//     //     return plantArray;
+//     //   })})
+//     .then(results => {
+//       console.log('RESPONSE BODY>>>>>>>>>>>>', results.body);
+//       response.render('searches/show', {results: results.body})})
+//     .catch(error => handleError(error, response));
+
+// }
 
 // Constructor Function
 // function Fish(result){
