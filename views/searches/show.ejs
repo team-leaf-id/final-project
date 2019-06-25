@@ -5,9 +5,9 @@
   <%- include('../layout/header')%>
   <main>
     <ul>
-      <% results.forEach(plant => { %>
+      <% results.forEach(fish => { %>
         <div>
-          <li class="name"><%= plant.common_name %></li>
+          <li class="name"><%= fish.species></li>
           <li class="id"><%= plant.id %></li>
           <li class="link"><%= plant.link %></li>
         </div>

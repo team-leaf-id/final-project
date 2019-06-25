@@ -34,7 +34,7 @@ function renderHomePage(request, response){
 }
 
 function searchForPlants(request, response){
-  let url = `http://trefle.io/api/plants/?token=${process.env.PLANT_KEY}&q=${request.body.search}`;
+  let url = `https://www.fishwatch.gov/api/species`;
 
   // console.log('request: ', request.body);
   // console.log('URL: ', url);
@@ -51,14 +51,15 @@ function searchForPlants(request, response){
       console.log('RESPONSE BODY>>>>>>>>>>>>', results.body);
       response.render('searches/show', {results: results.body})})
     .catch(error => handleError(error, response));
+
 }
 
 // Constructor Function
-function Plant(result){
-  this.common_name = result.common_name ? result.common_name : 'No common name available';
-  this.id = result.id ? result.id : 'No id available';
-  this.link = result.link? result.link : 'No link available';
-}
+// function Fish(result){
+//   this.location = result.object.location ? result.object.location : 'No common name available';
+//   this.id = result.id ? result.id : 'No id available';
+//   this.link = result.link? result.link : 'No link available';
+// }
 
 function handleError(error, response){
   console.error(error);
