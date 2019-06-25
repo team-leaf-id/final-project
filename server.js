@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 
 // API Routes
 app.get('/', renderHomePage);
-app.post('/searches', getFish);
+app.post('/searches', searchFish);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
@@ -40,24 +40,61 @@ function getFish(request, response){
   superagent.get(url)
     .then(results => {
       results.body.map(fish => {
+        let species_name = fish['Species Name'].toLowerCase();
+        let aliases = fish['Species Aliases'].split('<a href="/species-aliases/');
+        let path = fish['Path'].slice(9);
         const insertSQL = `INSERT INTO fish (species_name, species_aliases, path) VALUES
-        ('${fish['Species Name']}', '${fish['Species Aliases']}', '${fish['Path']}');`;
+        ('${species_name}', '${aliases}', '${path}');`;
         return client.query(insertSQL);
       })
     })
     .catch(error => handleError(error, response));
 }
 
-// function cacheWeather(weather, client, locationId) {
-//   // the time this function was called
-//   let createdAt = new Date().valueOf();
+function searchFish(request, response){
+  // const url = `https://www.fishwatch.gov/api/species`;
+  // console.log('THIS IS THE REQUEST', request.body.search);
+  let searchQuery = request.body.search.toLowerCase();
+  const SQL = `SELECT path FROM fish WHERE species_name LIKE '%${searchQuery}%';`;
+  return client.query(SQL).then(results => console.log('RESULTS!!!!!', results.rows));
+}
 
-//   const insertSQL = `INSERT INTO weathers (forecast, time, created_at, location_id) VALUES 
-//     ('${weather.forecast}', '${weather.time}', ${createdAt}, ${locationId});`;
-//   return client.query(insertSQL).then(results => {
-//     return results;
+
+// function getLocation(query, client, superagent) {
+//   return getStoredLocation(query, client).then(location => {
+//     if (location) {
+//       return location;
+//     } else {
+//       return getLocationFromApi(query, client, superagent);
+//     }
 //   });
 // }
+
+// function getStoredLocation(query, client) {
+//   const sql = `SELECT * FROM locations WHERE search_query='${query}'`;
+
+//   return client.query(sql).then(results => results.rows[0]);
+// }
+
+// function createSearch(request, response) {
+//   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+//   if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
+//   if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
+
+//   superagent.get(url)
+//     .then(apiResponse => apiResponse.body.items.map(bookResult =>{
+
+//       let bookArr = new Book(bookResult.volumeInfo);
+//       console.log(bookArr);
+//       return bookArr;
+//     })
+    
+//     )
+//     .then(results => response.render('pages/searches/show', { results: results }))
+//     .catch(err => handleError(err, response));
+// }
+
 
 // function getFish(request, response){
 //   let url = `https://www.fishwatch.gov/api/species`;
