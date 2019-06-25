@@ -1,0 +1,124 @@
+
+*{
+border: solid 2px black;
+}
+/* body{
+    background-image: url("/styles/background.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    overflow: hidden;
+} */
+
+h1{
+    border: solid 2px black;
+}
+nav{
+    border: none;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------MEDIA QUERY-------------------------------------------------------------------- */
+
+@media only screen and (min-device-width: 414px) and (max-device-width: 736px){
+
+        *{
+            -webkit-box-sizing: border-box !important;
+            -moz-box-sizing: border-box !important;
+            box-sizing: border-box !important;
+            text-align: center;
+        
+        }
+        .top-bar{
+            width: 100%;
+            height: 50px;
+            background-color: #f66300;
+        }
+
+
+        body{
+            background-color: aquamarine;
+            background-image: url("/styles/background.jpg");
+            background-attachment: fixed;
+            overflow: hidden;
+            background-repeat: no-repeat;
+        }
+
+        .logo-box{
+            margin: 0 auto;
+            
+        }
+            
+        main{
+            display: grid; 
+            grid-template-columns: [one] 1fr [two] 1fr [end];
+            grid-template-rows: [one] 1fr [two] 1fr [three] 1fr [four] 1fr;
+    
+        }
+        /* div, header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+        } */
+    
+
+/* @media screen and (min-width: 768px) and (max-width: 1024px){
+        *{
+            -webkit-box-sizing: border-box !important;
+            -moz-box-sizing: border-box !important;
+            box-sizing: border-box !important;
+            text-align: center;  
+        }
+
+        body{        
+            display: grid;
+            grid-template-columns: [one] 1fr [two] 1fr [end];
+            grid-template-rows: [one] 1fr [two] 1fr [three] 1fr [four] 1fr;
+    
+        }
+        div, header{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid black;
+        }
+    } */
+}
