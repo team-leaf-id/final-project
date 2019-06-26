@@ -86,8 +86,12 @@ function searchFish(request, response){
   const SQL = `SELECT DISTINCT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '%${searchQuery}%';`;
   return client.query(SQL)
     .then(results => {
-      console.log('RESULTS...........', results.rows);
-      response.render('searches/show', {results: results.rows});
+      if (results.rows.length < 1){
+        let error = [{species_name: 'Sorry! No results available. Please search again!'}];
+        response.render('searches/show', {results: error});
+      } else {
+        response.render('searches/show', {results: results.rows});
+      }
     })
     .catch(error => handleError(error, response));
 }
