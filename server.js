@@ -35,18 +35,47 @@ function renderHomePage(request, response){
 }
 
 function getFish(request, response){
+  return getFishFromDB()
+    .then(fishData => {
+      if (fishData.length > 1 ){
+        console.log('GETTING FISH DATA FROM OUR DATABASE');
+        return fishData;
+      } else {
+        console.log('GETTING FISH DATA FROM API');
+        return getFishFromAPI(request, response);
+      }
+    });
+}
+
+function getFishFromDB(){
+  let SQL = `SELECT * FROM fish;`;
+  return client.query(SQL)
+    .then(results => {
+      if(results.rows){
+        return results.rows;
+      } else {
+        return undefined;
+      }
+    });
+}
+
+function getFishFromAPI(request, response){
   const url = `https://www.fishwatch.gov/api/species`;
 
   superagent.get(url)
     .then(results => {
       results.body.map(fish => {
+        let regex = /(<a href="\/species-aliases\/|typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">|<\/a>|, +|"| )/gmi;
         let species_name = fish['Species Name'].toLowerCase();
-        let aliases = fish['Species Aliases'].split('<a href="/species-aliases/');
+        let aliases = fish['Species Aliases'].split(regex);
+        let filteredAliases = aliases.filter(str => !str.match(regex));
         let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
-        const insertSQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
-        ('${species_name}', '${aliases}', '${image_url}', '${path}');`;
-        return client.query(insertSQL);
+
+        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
+        ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
+        console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
+        return client.query(SQL);
       })
     })
     .catch(error => handleError(error, response));
@@ -54,10 +83,16 @@ function getFish(request, response){
 
 function searchFish(request, response){
   let searchQuery = request.body.search.toLowerCase();
-  const SQL = `SELECT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '${searchQuery}';`;
-
+  const SQL = `SELECT DISTINCT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '%${searchQuery}%';`;
   return client.query(SQL)
-    .then(results => response.render('searches/show', {results: results.rows}))
+    .then(results => {
+      if (results.rows.length < 1){
+        let error = [{species_name: 'Sorry! No results available. Please search again!'}];
+        response.render('searches/show', {results: error});
+      } else {
+        response.render('searches/show', {results: results.rows});
+      }
+    })
     .catch(error => handleError(error, response));
 }
 
