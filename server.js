@@ -150,7 +150,9 @@ function searchFish(request, response){
 
 // Constructor Function
 function Fish(result){
+
   this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
+
 }
 
 function handleError(error, response){
