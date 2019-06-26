@@ -6,6 +6,6 @@ CREATE TABLE fish(
     species_aliases text,
     image_url VARCHAR(255),
     path VARCHAR(255),
-    taste VARCHAR(255),
-    texture VARCHAR(255)
+    taste text,
+    texture text
 );
