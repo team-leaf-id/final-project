@@ -39,10 +39,10 @@ function getFish(request, response){
   return getFishFromDB()
     .then(fishData => {
       if (fishData.length > 1 ){
-        console.log('GETTING FISH DATA FROM OUR DATABASE');
+        console.log('42 - GETTING FISH DATA FROM OUR DATABASE');
         return fishData;
       } else {
-        console.log('GETTING FISH DATA FROM API');
+        console.log('45 - GETTING FISH DATA FROM API');
         return getFishFromAPI(request, response);
       }
     });
@@ -67,16 +67,23 @@ function getFishFromAPI(request, response){
     .then(results => {
       results.body.map(fish => {
         let regex = /(<a href="\/species-aliases\/|typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">|<\/a>|, +|"| )/gmi;
+        let regexTT = /(<p>|<\/p>|\\n|<span>|<\/span>|&nbsp|;)/gmi;
         let species_name = fish['Species Name'].toLowerCase();
         let aliases = fish['Species Aliases'].split(regex);
-        let filteredAliases = aliases.filter(str => !str.match(regex));
+        let filteredAliases = aliases.filter(str => !str.match(regex) && str.length > 1);
         let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
-
-        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
-        ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
-        // console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
-        return client.query(SQL);
+        let taste = 'No taste available';
+        if(fish['Taste']){
+          taste = fish['Taste'].replace(regexTT, '');
+        }
+        let texture = 'No texture available';
+        if(fish['Texture']){
+          texture = fish['Texture'].replace(regexTT, '');
+        }
+        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path, taste, texture) VALUES
+        ('${species_name}', '${filteredAliases}', '${image_url}', '${path}', '${taste}', '${texture}');`;
+        return client.query(SQL).catch(error => console.log('ERROR HERE', error));
       })
     })
     .catch(error => handleError(error, response));
@@ -103,7 +110,6 @@ function getFishDetails(request, response){
 
   superagent.get(url)
     .then(results => {
-      // console.log('RESULT!!!!!', results.body);
       const fishInstances = results.body.map(detailFishResult=>{
         // console.log('checking return', detailFishResult)
         let fishFish = new Fish(detailFishResult);
@@ -114,11 +120,71 @@ function getFishDetails(request, response){
         return fishFish;
       })
       return fishInstances;
-    }).then(results => {
-      // console.log('RESULTS!!!!!!!', results[0].location);
-
-      return response.render('searches/details', { fishBanana: results[0] })})
+    })
+    .then(results => {
+      console.log('111 - IN AREA TO RUN SUSTAINABILITY CHECK');
+      return sustainabilityCheck(results[0]).then(sustainabilityInfo => {
+        return {fishData: results[0], option: sustainabilityInfo};
+      });
+      // return {fishData: results[0], option: option};
+    })
+    .then(totalData => {
+      console.log('116 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
+      response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option })
+    })
     .catch(error => handleError(error, response));
+}
+
+function sustainabilityCheck(fishInfo){
+  console.log('123 - IN SUSTAINABILITY CHECK FUNCTION');
+  let tick;
+  const sustainableTalk = ['smart seafood choice', 'sustainably managed', 'responsibly harvested'];
+  sustainableTalk.forEach(phrase => {
+    if(fishInfo.quote.includes(phrase)){
+      tick = true;
+    }
+  })
+  if (tick === true){
+    console.log('133 - TICK SUSTAINABLE, INCLUDES PHRASES');
+    let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
+    let image = 'https://via.placeholder.com/150'; //Yoshi's images will go here
+    return {text: text, image: image};
+  } else {
+    console.log('136 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
+    let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
+    let image = 'https://via.placeholder.com/50'; //Yoshi's image will go here
+    return findAlt(fishInfo, text, image);
+    // return {text: text, image: image, data: data};
+  }
+}
+
+// function findRecipes(fishInfo){ //Which recipe API to use?
+
+// }
+
+function findAlt(fishInfo, text, image){ 
+  let keywords = findTasteTextureKeywords(fishInfo);
+  console.log('160 - IN ALT FUNCTION, KEYWORDS:', keywords);
+
+  const SQL = `SELECT DISTINCT species_name, path FROM fish WHERE taste LIKE '%${keywords.taste[0]}%' AND texture LIKE '%${keywords.texture[0]}%';`;
+
+  return client.query(SQL)
+    .then(results => {
+      return {text: text, image: image, data: results.rows};
+    })
+}
+
+function findTasteTextureKeywords(fishInfo){
+  let tasteRegex = /(sweet|delicate|oil|mild|rich|nutty)/gmi;
+  let textureRegex = /(semi-firm|lean|moist|soft|flaky|firm|tender)/gmi;
+  let taste = fishInfo.taste.match(tasteRegex);
+  let texture = fishInfo.texture.match(textureRegex);
+  return {taste: taste, texture: texture};
+}
+
+function handleError(error, response){
+  console.error(error);
+  response.status(500).send('Sorry, something went wrong')
 }
 
 // Constructor Function
@@ -135,7 +201,7 @@ function Fish(result){
   this.population = result['Population'] ? result['Population'] :'no population information available' ;
   this.scientific_name = result['Scientific Name'] ? result['Scientific Name'] :'no Scientific Name available' ;
   this.availability = result['Availability'] ? result['Availability'] :'no availability information available' ;
-  this.biology = result['Biology'] ? result['Biology'] :'no biology information available' ;
+  // this.biology = result['Biology'] ? result['Biology'] :'no biology information available' ;
   this.quote = result['Quote'] ? result['Quote'] :'no information available' ;
   this.taste = result['Taste'] ? result['Taste'] :'no flavor information available' ;
   this.texture = result['Texture'] ? result['Texture'] :'no Texture information available' ;
@@ -143,30 +209,6 @@ function Fish(result){
   this.physical_description = result['Physical Description'] ? result['Physical Description'] :'no physical description information available' ;
   this.source = result['Source'] ? result['Source'] :'no source information available' ;
 }
-
-
-
-// function getFish(request, response){
-//   let url = `https://www.fishwatch.gov/api/species`;
-
-//   // console.log('request: ', request.body);
-//   // console.log('URL: ', url);
-
-//   superagent.get(url)
-//     // .then(apiResponse => {
-//     //   console.log('RESPONSE BODY', apiResponse.body);
-//     //   apiResponse.body.map(plantResult => {
-//     //     // console.log('RESPONSE', apiResponse);
-//     //     let plantArray = new Plant(plantResult);
-//     //     return plantArray;
-//     //   })})
-//     .then(results => {
-//       console.log('RESPONSE BODY>>>>>>>>>>>>', results.body);
-//       response.render('searches/show', {results: results.body})})
-//     .catch(error => handleError(error, response));
-
-// }
-
 
 function handleError(error, response){
   console.error(error);
