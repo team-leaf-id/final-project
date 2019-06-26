@@ -82,11 +82,19 @@ nav{
             background: linear-gradient(to bottom, rgba(86,211,209,1) 11%,rgba(0,158,195,1) 70%,rgba(33,130,183,1) 96%);
         }
                
-        
+        .search-box{
+            display: none;
+            margin: 0 auto;
+            /* position: absolute; */
+           
+            width: 90%;
+            background-color: rgba(60, 79, 120, 0.40);
+            padding: 250px 0 250px 0;
+        }
         nav.top-bar{
             
             width: 90%;
-            max-height: 8vh;
+            max-height: 20vh;
             background-color: #3C4F78;
             clip-path: polygon(0 0, 100% 0, 85% 20%, 15% 20%);
             
