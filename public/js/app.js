@@ -5,8 +5,4 @@ $(document).ready(function() {
   $('.top-bar').click(function() {
     $('#logo').toggle(1, 'linear');
   });
-
-
-  
-  $("#firstWord").firstWord();
 });
