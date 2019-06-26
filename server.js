@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 // API Routes
 app.get('/', renderHomePage);
 app.post('/searches', searchFish);
+app.get('/searches/details/:path', getFishDetails);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
@@ -116,19 +117,55 @@ function searchFish(request, response){
 //     .catch(error => handleError(error, response));
 // }
 
-// function getFishDetails(path){
-//   const url = `https://www.fishwatch.gov/api/species${path}`;
-//   return superagent.get(url)
-//     .then(results => {
-//       let fishfish = new Fish(results.body[0]);
-//       // console.log('GET FISH URL RESULTS', fishfish);
-//       return fishfish;
-//     })
-// }
+function getFishDetails(request, response){
+  // console.log('request.............', request.params.path);
+  // let SQL =`SELECT path FROM fish WHERE id = ${request.params.id};`;
+  const url = `https://www.fishwatch.gov/api/species/${request.params.path}`;
+
+
+  superagent.get(url)
+    .then(results => {
+      // console.log('RESULT!!!!!', results.body);
+      const fishInstances = results.body.map(detailFishResult=>{
+        let fishFish = new Fish(detailFishResult);
+        return fishFish;
+      })
+      // console.log('INSTANCES....', fishInstances);
+      return fishInstances;
+    }).then(results => {
+      console.log('RESULTS!!!!!!!', results[0].location);
+      return response.render('searches/details', { fishBanana: results[0] })})
+    // }).then(results => response.send(results))
+    .catch(error => handleError(error, response));
+
+}
+
+
+// Constructor Function
+function Fish(result){
+
+  this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
+  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src : 'No image available';
+  this.path = result['Path'] ? result['Path'] : 'no path available' ;
+  this.habitat = result['Habitat'] ? result['Habitat'] : 'no habitat information available' ;
+  this.habitat_impacts = result['Habitat Impacts'] ? result['Habitat Impacts'] :'no habitat impact information available' ;
+  this.location = result['Location'] ? result['Location'] :'no location information available' ;
+  this.population = result['Population'] ? result['Population'] :'no population information available' ;
+  this.scientific_name = result['Scientific Name'] ? result['Scientific Name'] :'no Scientific Name available' ;
+  this.availability = result['Availability'] ? result['Availability'] :'no availability information available' ;
+  this.biology = result['Biology'] ? result['Biology'] :'no biology information available' ;
+  this.quote = result['Quote'] ? result['Quote'] :'no information available' ;
+  this.taste = result['Taste'] ? result['Taste'] :'no flavor information available' ;
+  this.texture = result['Texture'] ? result['Texture'] :'no Texture information available' ;
+  this.color = result['Color'] ? result['Color'] :'no color information available' ;
+  this.physical_description = result['Physical Description'] ? result['Physical Description'] :'no physical description information available' ;
+  this.source = result['Source'] ? result['Source'] :'no source information available' ;
+}
 
 // function getLocation(query, client, superagent) {
 //   return getStoredLocation(query, client).then(location => {
 //     if (location) {
+
 //       return location;
 //     } else {
 //       return getLocationFromApi(query, client, superagent);
@@ -155,7 +192,7 @@ function searchFish(request, response){
 //       console.log(bookArr);
 //       return bookArr;
 //     })
-    
+
 //     )
 //     .then(results => response.render('pages/searches/show', { results: results }))
 //     .catch(err => handleError(err, response));
@@ -183,12 +220,6 @@ function searchFish(request, response){
 
 // }
 
-// Constructor Function
-function Fish(result){
-
-  this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
-
-}
 
 function handleError(error, response){
   console.error(error);

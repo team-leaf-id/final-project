@@ -9,8 +9,8 @@
         <div>
          <img class="fish-pic" src="<%= fish.image_url %>" alt="">
          <hr>
-       
           <li id="name"><%= fish.species_name %></li>
+          <a class="button" href="/searches/details<%= fish.path%>">View Details</a>
         </div>
       <% }) %>
     </ul>

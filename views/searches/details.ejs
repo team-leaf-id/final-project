@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../layout/head')%>
+<body>
+  <%- include('../layout/header')%>
+  <main>
+    <section class="fish-container">
+        <ul id="fish-details">
+          <li data-id="<%= fishBanana.path %>">
+            <img src="<%=fishBanana.image_url%>">
+            <h4>Name: <%= fishBanana.species_name%></h4>
+            <p>Also known as: <%= fishBanana.scientific_name%></p>       
+            <p>Sustainability status: <%= fishBanana.quote%></p>
+            <p>Habitat: <%= fishBanana.habitat%>
+            <p>Habitat Impact: <%= fishBanana.habitat_impacts %></p>
+            <p>Location: <%= fishBanana.location %></p>
+            <p>Population: <%= fishBanana.population %></p>
+            <p>Availability: <%= fishBanana.availability %></p>
+            <p>Biology: <%= fishBanana.biology %></p>
+            <p>Physical description: <%= fishBanana.physical_description %></p>
+            <p>Source: <%= fishBanana.source %></p>
+
+          </li>
+        </ul>
+      </section>
+    
+
+
+
+    
+  </main>
+  <%- include('../layout/footer')%>
+</body>
+</html>
+
