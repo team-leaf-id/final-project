@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 // API Routes
 app.get('/', renderHomePage);
 app.post('/searches', searchFish);
+app.get('/searches/details/:path', getFishDetails);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
@@ -38,10 +39,10 @@ function getFish(request, response){
   return getFishFromDB()
     .then(fishData => {
       if (fishData.length > 1 ){
-        console.log('GETTING FISH DATA FROM OUR DATABASE');
+        console.log('42 - GETTING FISH DATA FROM OUR DATABASE');
         return fishData;
       } else {
-        console.log('GETTING FISH DATA FROM API');
+        console.log('45 - GETTING FISH DATA FROM API');
         return getFishFromAPI(request, response);
       }
     });
@@ -95,18 +96,49 @@ function searchFish(request, response){
     .catch(error => handleError(error, response));
 }
 
+function getFishDetails(request, response){
+  const url = `https://www.fishwatch.gov/api/species/${request.params.path}`;
+
+  superagent.get(url)
+    .then(results => {
+      const fishInstances = results.body.map(detailFishResult=>{
+        let fishFish = new Fish(detailFishResult);
+        return fishFish;
+      })
+      return fishInstances;
+    })
+    .then(results => {
+      console.log('111 - IN AREA TO RUN SUSTAINABILITY CHECK');
+      let option = sustainabilityCheck(results[0]);
+      return {fishData: results[0], option: option};
+    })
+    .then(totalData => {
+      console.log('116 - IN AREA TO RENDER', totalData);
+      response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option })
+    })
+    .catch(error => handleError(error, response));
+
+}
+
 function sustainabilityCheck(fishInfo){
-  const sustainableTalk = ['smart seafood choice', 'sustainably managed']; //Can this be an array?
-  if(fishInfo.quote.includes(sustainableTalk)){
-    let marker = 'canSustain.jpg'; //Get image from Yoshi
-    let text = 'This fish is sustainable and a smart seafood choice! Here are some recipes:';
-    let recipes = findRecipes(fishInfo);
-    return marker, text, recipes;
+  // console.log('123 - IN SUSTAINABILITY CHECK FUNCTION', fishInfo);
+  let tick;
+  const sustainableTalk = ['smart seafood choice', 'sustainably managed', 'responsibly harvested'];
+  sustainableTalk.forEach(phrase => {
+    if(fishInfo.quote.includes(phrase)){
+      tick = true;
+    }
+  })
+  if (tick === true){
+    console.log('133 - TICK, INCLUDES PHRASES');
+    let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
+    let image = 'https://via.placeholder.com/150';
+    return {text: text, image: image};
   } else {
-    let marker = 'notSustain.jpg';
-    let text = 'This fish is not a smart seafood choice. Here are other fish that you may enjoy:';
-    let alt = findAlt(fishInfo);
-    return marker, text, alt;
+    console.log('136 - TICK IS FALSE, DOES NOT INCLUDE PHRASE');
+    let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
+    let image = 'https://via.placeholder.com/50';
+    return {text: text, image: image};
   }
 }
 
@@ -118,16 +150,30 @@ function findAlt(fishInfo){
   
 }
 
+function handleError(error, response){
+  console.error(error);
+  response.status(500).send('Sorry, something went wrong')
+}
+
 // Constructor Function
 function Fish(result){
 
   this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
-
-}
-
-function handleError(error, response){
-  console.error(error);
-  response.status(500).send('Sorry, something went wrong')
+  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src : 'No image available';
+  this.path = result['Path'] ? result['Path'] : 'no path available' ;
+  this.habitat = result['Habitat'] ? result['Habitat'] : 'no habitat information available' ;
+  this.habitat_impacts = result['Habitat Impacts'] ? result['Habitat Impacts'] :'no habitat impact information available' ;
+  this.location = result['Location'] ? result['Location'] :'no location information available' ;
+  this.population = result['Population'] ? result['Population'] :'no population information available' ;
+  this.scientific_name = result['Scientific Name'] ? result['Scientific Name'] :'no Scientific Name available' ;
+  this.availability = result['Availability'] ? result['Availability'] :'no availability information available' ;
+  // this.biology = result['Biology'] ? result['Biology'] :'no biology information available' ;
+  this.quote = result['Quote'] ? result['Quote'] :'no information available' ;
+  this.taste = result['Taste'] ? result['Taste'] :'no flavor information available' ;
+  this.texture = result['Texture'] ? result['Texture'] :'no Texture information available' ;
+  this.color = result['Color'] ? result['Color'] :'no color information available' ;
+  this.physical_description = result['Physical Description'] ? result['Physical Description'] :'no physical description information available' ;
+  this.source = result['Source'] ? result['Source'] :'no source information available' ;
 }
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
