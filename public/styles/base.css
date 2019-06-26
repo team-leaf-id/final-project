@@ -68,58 +68,89 @@ nav{
             box-sizing: border-box !important;
             text-align: center;
             border: none;
-        
         }
+
         
         body{
-            height: 100%;
             margin: 0;
+            background-image: url("../img/background.jpg");
             background-repeat: no-repeat;
             background-attachment: fixed;
-           
-            background: -moz-linear-gradient(top, rgba(86,211,209,1) 11%, rgba(0,158,195,1) 70%, rgba(33,130,183,1) 96%);
-            background: -webkit-linear-gradient(top, rgba(86,211,209,1) 11%,rgba(0,158,195,1) 70%,rgba(33,130,183,1) 96%);
-            background: linear-gradient(to bottom, rgba(86,211,209,1) 11%,rgba(0,158,195,1) 70%,rgba(33,130,183,1) 96%);
+            background-size:cover;
         }
-               
+           
+        
         .search-box{
             display: none;
-            margin: 0 auto;
-            /* position: absolute; */
-           
+            margin: 0 auto;           
             width: 90%;
             background-color: rgba(60, 79, 120, 0.40);
             padding: 250px 0 250px 0;
+            border: 3px solid #187795;
         }
+
+
         nav.top-bar{
-            
+            top:0;
+            position: absolute;
             width: 90%;
             max-height: 20vh;
             background-color: #3C4F78;
-            clip-path: polygon(0 0, 100% 0, 85% 20%, 15% 20%);
-            
-           
+            clip-path: polygon(0 0, 100% 0, 85% 20%, 15% 20%); 
         }
 
+
         div.logo-box{
-            
-            margin: 20% auto;
-            
+            position: relative;
+            margin: 20% auto;   
         }
+
+
         img#logo{
+           
             width: 50%;
+            z-index: -50;
             -webkit-box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
             -moz-box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
             box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
         }   
        
-        }
-        div, header{
+        
+            header{
             display: flex;
             justify-content: center;
-            align-items: center;
-           
+            align-items: center;  
         }
+
+      
+        .fish-container{
+            display: flex;
+            justify-content:space-evenly; 
+            margin: 20% 5%;
+            width: 50vh;
+            height: 80vh;
+            overflow: scroll;
+            position: fixed;
+            background-color: rgba(60, 79, 120, 0.40);
+            padding: 2%;
+            border: 3px solid #187795;
+        }
+
+      
+        .fish-pic{
+            margin: 2% 10% 2% 0;
+            width: 50%;
+            left: 0;
+        }
+    
+
+
+        #name{
+            padding: .5em;
+            border: 1px solid white;
+        }
+
+
         .footer-wrapper {
             background: none repeat scroll 0 0 transparent;
             bottom: 0;
@@ -127,6 +158,7 @@ nav{
             text-align: center;
             width: 100%;
         }
+
         
         footer {
             background: none repeat scroll 0 0 rgba(60, 79, 120, 0.2);
@@ -137,5 +169,8 @@ nav{
             -moz-box-shadow: 0px 10px 57px -6px rgb(216, 216, 216);
             box-shadow: 0px 10px 57px -6px rgb(216, 216, 216);
         }
+
         
+
     
+    }
