@@ -42,9 +42,10 @@ function getFish(request, response){
       results.body.map(fish => {
         let species_name = fish['Species Name'].toLowerCase();
         let aliases = fish['Species Aliases'].split('<a href="/species-aliases/');
+        let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
-        const insertSQL = `INSERT INTO fish (species_name, species_aliases, path) VALUES
-        ('${species_name}', '${aliases}', '${path}');`;
+        const insertSQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
+        ('${species_name}', '${aliases}', '${image_url}', '${path}');`;
         return client.query(insertSQL);
       })
     })
@@ -52,13 +53,43 @@ function getFish(request, response){
 }
 
 function searchFish(request, response){
-  // const url = `https://www.fishwatch.gov/api/species`;
-  // console.log('THIS IS THE REQUEST', request.body.search);
   let searchQuery = request.body.search.toLowerCase();
-  const SQL = `SELECT path FROM fish WHERE species_name LIKE '%${searchQuery}%';`;
-  return client.query(SQL).then(results => console.log('RESULTS!!!!!', results.rows));
+  const SQL = `SELECT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '${searchQuery}';`;
+
+  return client.query(SQL)
+    .then(results => response.render('searches/show', {results: results.rows}))
+    .catch(error => handleError(error, response));
 }
 
+// function searchFish(request, response){
+//   // const url = `https://www.fishwatch.gov/api/species`;
+//   let searchQuery = request.body.search.toLowerCase();
+//   const SQL = `SELECT path FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '${searchQuery}';`;
+//   return client.query(SQL)
+//     .then(results => {
+//       let fishArray = [];
+//       results.rows.forEach(row => {
+//         getFishDetails(row.path)
+//           .then(fishfish => {
+//             console.log('FISH', fishfish);
+//             fishArray.push(fishfish);
+//           });
+//       })
+//       return fishArray;
+//     })
+//     .then(results => response.render('searches/show', {results: results}))
+//     .catch(error => handleError(error, response));
+// }
+
+// function getFishDetails(path){
+//   const url = `https://www.fishwatch.gov/api/species${path}`;
+//   return superagent.get(url)
+//     .then(results => {
+//       let fishfish = new Fish(results.body[0]);
+//       // console.log('GET FISH URL RESULTS', fishfish);
+//       return fishfish;
+//     })
+// }
 
 // function getLocation(query, client, superagent) {
 //   return getStoredLocation(query, client).then(location => {
@@ -118,11 +149,9 @@ function searchFish(request, response){
 // }
 
 // Constructor Function
-// function Fish(result){
-//   this.location = result.object.location ? result.object.location : 'No common name available';
-//   this.id = result.id ? result.id : 'No id available';
-//   this.link = result.link? result.link : 'No link available';
-// }
+function Fish(result){
+  this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
+}
 
 function handleError(error, response){
   console.error(error);

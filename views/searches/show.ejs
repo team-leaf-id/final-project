@@ -7,9 +7,8 @@
     <ul>
       <% results.forEach(fish => { %>
         <div>
-          <li class="name"><%= fish.species></li>
-          <li class="id"><%= plant.id %></li>
-          <li class="link"><%= plant.link %></li>
+          <img src="<%= fish.image_url %>" alt="Image of <%= fish.species_name%>">
+          <li class="name"><%= fish.species_name %></li>
         </div>
       <% }) %>
     </ul>
