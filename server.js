@@ -83,7 +83,7 @@ function getFishFromAPI(request, response){
 
 function searchFish(request, response){
   let searchQuery = request.body.search.toLowerCase();
-  const SQL = `SELECT DISTINCT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '${searchQuery}';`;
+  const SQL = `SELECT DISTINCT * FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '%${searchQuery}%';`;
   return client.query(SQL)
     .then(results => {
       console.log('RESULTS...........', results.rows);
