@@ -67,14 +67,18 @@ function getFishFromAPI(request, response){
     .then(results => {
       results.body.map(fish => {
         let regex = /(<a href="\/species-aliases\/|typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">|<\/a>|, +|"| )/gmi;
+        let regexTT = /(<p>|<\/p>\\n)/gmi;
         let species_name = fish['Species Name'].toLowerCase();
         let aliases = fish['Species Aliases'].split(regex);
         let filteredAliases = aliases.filter(str => !str.match(regex) && str.length > 1);
         let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
+        let taste = fish['Taste'].split(regexTT);
+        console.log('77 - SPLIT TASTE', taste);
+        let texture = fish['Texture'];
 
-        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
-        ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
+        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path, taste, texture) VALUES
+        ('${species_name}', '${filteredAliases}', '${image_url}', '${path}', '${taste}', '${texture}');`;
         return client.query(SQL);
       })
     })
@@ -113,7 +117,7 @@ function getFishDetails(request, response){
       return {fishData: results[0], option: option};
     })
     .then(totalData => {
-      console.log('116 - IN AREA TO RENDER', totalData);
+      console.log('116 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
       response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option })
     })
     .catch(error => handleError(error, response));
@@ -121,7 +125,7 @@ function getFishDetails(request, response){
 }
 
 function sustainabilityCheck(fishInfo){
-  // console.log('123 - IN SUSTAINABILITY CHECK FUNCTION', fishInfo);
+  console.log('123 - IN SUSTAINABILITY CHECK FUNCTION');
   let tick;
   const sustainableTalk = ['smart seafood choice', 'sustainably managed', 'responsibly harvested'];
   sustainableTalk.forEach(phrase => {
@@ -130,24 +134,34 @@ function sustainabilityCheck(fishInfo){
     }
   })
   if (tick === true){
-    console.log('133 - TICK, INCLUDES PHRASES');
+    console.log('133 - TICK SUSTAINABLE, INCLUDES PHRASES');
     let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
-    let image = 'https://via.placeholder.com/150';
+    let image = 'https://via.placeholder.com/150'; //Yoshi's images will go here
     return {text: text, image: image};
   } else {
-    console.log('136 - TICK IS FALSE, DOES NOT INCLUDE PHRASE');
+    console.log('136 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
     let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
-    let image = 'https://via.placeholder.com/50';
-    return {text: text, image: image};
+    let image = 'https://via.placeholder.com/50'; //Yoshi's image will go here
+    let data = findAlt(fishInfo);
+    return {text: text, image: image, data: data};
   }
 }
 
-function findRecipes(fishInfo){ //Which recipe API to use?
+// function findRecipes(fishInfo){ //Which recipe API to use?
 
-}
+// }
 
-function findAlt(fishInfo){ 
-  
+// function findAlt(fishInfo){ 
+//   let keywords = findTasteTextureKeywords(fishInfo);
+
+// }
+
+function findTasteTextureKeywords(fishInfo){
+  let tasteRegex = /(sweet|delicate|oil|mild)/gmi;
+  let textureRegex = /(semi-firm|lean|moist|soft|flaky|firm|tender)/gmi;
+  let taste = fishInfo.taste.match(tasteRegex);
+  let texture = fishInfo.texture.match(textureRegex);
+  return {taste: taste, texture: texture};
 }
 
 function handleError(error, response){
