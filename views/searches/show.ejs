@@ -2,15 +2,16 @@
 <html lang="en">
   <%- include('../layout/head')%>
 <body>
-  <!-- <%- include('../layout/header')%> -->
+  <%- include('../layout/header')%>
   <main class="fish-container">
     <ul>
       <% results.forEach(fish => { %>
-        <div>
-         <img class="fish-pic" src="<%= fish.image_url %>" alt="">
-         <hr>
-          <li id="name"><%= fish.species_name %></li>
-          <a class="button" href="/searches/details<%= fish.path%>">View Details</a>
+        <div class="fish-div">
+          <a class="fish-path-button" href="/searches/details<%= fish.path%>">
+            <img class="fish-pic" src="<%= fish.image_url %>" alt="">
+            <hr>
+             </a>
+             <li id="name"><%= fish.species_name %></li>
         </div>
       <% }) %>
     </ul>
