@@ -68,13 +68,12 @@ function getFishFromAPI(request, response){
         let regex = /(<a href="\/species-aliases\/|typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">|<\/a>|, +|"| )/gmi;
         let species_name = fish['Species Name'].toLowerCase();
         let aliases = fish['Species Aliases'].split(regex);
-        let filteredAliases = aliases.filter(str => !str.match(regex));
+        let filteredAliases = aliases.filter(str => !str.match(regex) && str.length > 1);
         let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
 
         const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
         ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
-        console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
         return client.query(SQL);
       })
     })
