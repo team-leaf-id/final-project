@@ -74,7 +74,7 @@ function getFishFromAPI(request, response){
 
         const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
         ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
-        console.log('ALIAS', filteredAliases); // TODO: REGEX PROBLEM HERE
+        console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
         return client.query(SQL);
       })
     })
