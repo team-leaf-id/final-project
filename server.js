@@ -35,6 +35,31 @@ function renderHomePage(request, response){
 }
 
 function getFish(request, response){
+  return getFishFromDB()
+    .then(fishData => {
+      if (fishData.length > 1 ){
+        console.log('GETTING FISH DATA FROM OUR DATABASE');
+        return fishData;
+      } else {
+        console.log('GETTING FISH DATA FROM API');
+        return getFishFromAPI(request, response);
+      }
+    });
+}
+
+function getFishFromDB(){
+  let SQL = `SELECT * FROM fish;`;
+  return client.query(SQL)
+    .then(results => {
+      if(results.rows){
+        return results.rows;
+      } else {
+        return undefined;
+      }
+    });
+}
+
+function getFishFromAPI(request, response){
   const url = `https://www.fishwatch.gov/api/species`;
 
   superagent.get(url)
@@ -46,10 +71,11 @@ function getFish(request, response){
         let filteredAliases = aliases.filter(str => !str.match(regex));
         let image_url = fish['Species Illustration Photo'].src;
         let path = fish['Path'].slice(9);
-        const insertSQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
+
+        const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
         ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
         console.log('ALIAS', filteredAliases); // TODO: REGEX PROBLEM HERE
-        return client.query(insertSQL);
+        return client.query(SQL);
       })
     })
     .catch(error => handleError(error, response));

@@ -7,9 +7,3 @@ CREATE TABLE fish(
     image_url VARCHAR(255),
     path VARCHAR(255)
 );
-
-INSERT INTO fish (species_name, species_aliases, path) VALUES (
-    'trout',
-    'salmon',
-    '/profiles/salmon'
-);
