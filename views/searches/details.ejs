@@ -4,11 +4,11 @@
 <body>
   <%- include('../layout/header')%>
   <main>
-    <section class="fish-container">
+    <section class="fish-container-details">
         <ul id="fish-details">
           <li data-id="<%= fishBanana.path %>">
-            <img src="<%=fishBanana.image_url%>">
-            <h4>Name: <%= fishBanana.species_name%></h4>
+            <img id="fish-pic-details" src="<%=fishBanana.image_url%>">
+            <h4 id="name-details">Name: <%= fishBanana.species_name%></h4>
             <p>Also known as: <%= fishBanana.scientific_name%></p>       
             <p>Sustainability status: <%= fishBanana.quote%></p>
             <p>Habitat: <%= fishBanana.habitat%>
