@@ -106,11 +106,17 @@ function searchFish(request, response){
 
 function getFishDetails(request, response){
   const url = `https://www.fishwatch.gov/api/species/${request.params.path}`;
+  let regex = /<ul>\s<li>|<li>|<\/li>| <\/ul>|<p>|<\/p>|&[a-z][a-z][a-z][a-z];|\/n|&[a-z][a-z][a-z][a-z];<\/li><\/ul>|<ul>\s<li>|\s<\/ul>|<em>|<\/em>/gmi;
 
   superagent.get(url)
     .then(results => {
       const fishInstances = results.body.map(detailFishResult=>{
+        // console.log('checking return', detailFishResult)
         let fishFish = new Fish(detailFishResult);
+        for (const detail in fishFish) {
+          fishFish[detail] = fishFish[detail].replace(regex, '');
+        }
+        // console.log('checking fishfish!!!!', fishFish);
         return fishFish;
       })
       return fishInstances;
@@ -127,7 +133,6 @@ function getFishDetails(request, response){
       response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option })
     })
     .catch(error => handleError(error, response));
-
 }
 
 function sustainabilityCheck(fishInfo){
@@ -184,9 +189,11 @@ function handleError(error, response){
 
 // Constructor Function
 function Fish(result){
+  let httpRegex = /^(https:\/\/)?g/
+
 
   this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
-  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src : 'No image available';
+  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src.replace(httpRegex, 'https') : 'No image available';
   this.path = result['Path'] ? result['Path'] : 'no path available' ;
   this.habitat = result['Habitat'] ? result['Habitat'] : 'no habitat information available' ;
   this.habitat_impacts = result['Habitat Impacts'] ? result['Habitat Impacts'] :'no habitat impact information available' ;
@@ -201,6 +208,11 @@ function Fish(result){
   this.color = result['Color'] ? result['Color'] :'no color information available' ;
   this.physical_description = result['Physical Description'] ? result['Physical Description'] :'no physical description information available' ;
   this.source = result['Source'] ? result['Source'] :'no source information available' ;
+}
+
+function handleError(error, response){
+  console.error(error);
+  response.status(500).send('Sorry, something went wrong')
 }
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
