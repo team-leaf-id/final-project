@@ -75,7 +75,7 @@ function getFishFromAPI(request, response){
 
         const SQL = `INSERT INTO fish (species_name, species_aliases, image_url, path) VALUES
         ('${species_name}', '${filteredAliases}', '${image_url}', '${path}');`;
-        console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
+        // console.log('ALIAS', filteredAliases); // TODO: REGEX TIDY UP HERE
         return client.query(SQL);
       })
     })
@@ -97,55 +97,37 @@ function searchFish(request, response){
     .catch(error => handleError(error, response));
 }
 
-// function searchFish(request, response){
-//   // const url = `https://www.fishwatch.gov/api/species`;
-//   let searchQuery = request.body.search.toLowerCase();
-//   const SQL = `SELECT path FROM fish WHERE species_name LIKE '%${searchQuery}%' OR species_aliases LIKE '${searchQuery}';`;
-//   return client.query(SQL)
-//     .then(results => {
-//       let fishArray = [];
-//       results.rows.forEach(row => {
-//         getFishDetails(row.path)
-//           .then(fishfish => {
-//             console.log('FISH', fishfish);
-//             fishArray.push(fishfish);
-//           });
-//       })
-//       return fishArray;
-//     })
-//     .then(results => response.render('searches/show', {results: results}))
-//     .catch(error => handleError(error, response));
-// }
-
 function getFishDetails(request, response){
-  // console.log('request.............', request.params.path);
-  // let SQL =`SELECT path FROM fish WHERE id = ${request.params.id};`;
   const url = `https://www.fishwatch.gov/api/species/${request.params.path}`;
-
+  let regex = /<ul>\s<li>|<li>|<\/li>| <\/ul>|<p>|<\/p>|&[a-z][a-z][a-z][a-z];|\/n|&[a-z][a-z][a-z][a-z];<\/li><\/ul>|<ul>\s<li>|\s<\/ul>|<em>|<\/em>/gmi;
 
   superagent.get(url)
     .then(results => {
       // console.log('RESULT!!!!!', results.body);
       const fishInstances = results.body.map(detailFishResult=>{
+        // console.log('checking return', detailFishResult)
         let fishFish = new Fish(detailFishResult);
+        for (const detail in fishFish) {
+          fishFish[detail] = fishFish[detail].replace(regex, '');
+        }
+        // console.log('checking fishfish!!!!', fishFish);
         return fishFish;
       })
-      // console.log('INSTANCES....', fishInstances);
       return fishInstances;
     }).then(results => {
-      console.log('RESULTS!!!!!!!', results[0].location);
+      // console.log('RESULTS!!!!!!!', results[0].location);
+
       return response.render('searches/details', { fishBanana: results[0] })})
-    // }).then(results => response.send(results))
     .catch(error => handleError(error, response));
-
 }
-
 
 // Constructor Function
 function Fish(result){
+  let httpRegex = /^(https:\/\/)?g/
+
 
   this.species_name = result['Species Name'] ? result['Species Name'] : 'No name information available';
-  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src : 'No image available';
+  this.image_url = result['Species Illustration Photo'].src ? result['Species Illustration Photo'].src.replace(httpRegex, 'https') : 'No image available';
   this.path = result['Path'] ? result['Path'] : 'no path available' ;
   this.habitat = result['Habitat'] ? result['Habitat'] : 'no habitat information available' ;
   this.habitat_impacts = result['Habitat Impacts'] ? result['Habitat Impacts'] :'no habitat impact information available' ;
@@ -162,41 +144,6 @@ function Fish(result){
   this.source = result['Source'] ? result['Source'] :'no source information available' ;
 }
 
-// function getLocation(query, client, superagent) {
-//   return getStoredLocation(query, client).then(location => {
-//     if (location) {
-
-//       return location;
-//     } else {
-//       return getLocationFromApi(query, client, superagent);
-//     }
-//   });
-// }
-
-// function getStoredLocation(query, client) {
-//   const sql = `SELECT * FROM locations WHERE search_query='${query}'`;
-
-//   return client.query(sql).then(results => results.rows[0]);
-// }
-
-// function createSearch(request, response) {
-//   let url = 'https://www.googleapis.com/books/v1/volumes?q=';
-
-//   if (request.body.search[1] === 'title') { url += `+intitle:${request.body.search[0]}`; }
-//   if (request.body.search[1] === 'author') { url += `+inauthor:${request.body.search[0]}`; }
-
-//   superagent.get(url)
-//     .then(apiResponse => apiResponse.body.items.map(bookResult =>{
-
-//       let bookArr = new Book(bookResult.volumeInfo);
-//       console.log(bookArr);
-//       return bookArr;
-//     })
-
-//     )
-//     .then(results => response.render('pages/searches/show', { results: results }))
-//     .catch(err => handleError(err, response));
-// }
 
 
 // function getFish(request, response){
