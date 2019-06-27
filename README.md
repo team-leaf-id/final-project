@@ -35,9 +35,17 @@ We're using regex to filter the text bing displayed to the user.
 ##COLOR PALETTE:
 
 <!-- DARK SEAWEED: #79B791
+DARK SEA GREEN: #79B791
 METALLIC SEAWEED: #187795
 ISABELLINE: #EAEDEA
 CHARCOAL: #383F51
 INDIPENDENCE:#3C4F78 
 LOGO WHITE: #DADAD9
 -->
+
+##GOOGLE FONTS:
+<!-- font-family: 'Raleway', sans-serif;
+font-family: 'DM Sans', sans-serif;
+font-family: 'Varela Round', sans-serif;
+font-family: 'Gothic A1', sans-serif;
+font-family: 'Hind Madurai', sans-serif; -->

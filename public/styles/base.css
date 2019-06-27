@@ -106,18 +106,29 @@ nav{
 
 
         nav.top-bar{
-            top:0;
+            top: 0;
             position: absolute;
-            width: 40%;
-            max-height: 30vh;
+            width: 30%;
+            height: 100px;
             background-color: #3C4F78;
             clip-path: polygon(0 0, 100% 0, 85% 20%, 15% 20%); 
+
+        }
+
+        #arrow{
+            width: 15px;
+            margin-bottom: 26px;
+            
+            
         }
 
 
         div.logo-box{
             position: absolute;
-            margin: 50% auto;   
+            margin: 50% auto;  
+            -webkit-box-shadow: 4px 6px 5px 0px rgba(56,63,81,0.47);
+            -moz-box-shadow: 4px 6px 5px 0px rgb(56, 63, 81);
+            box-shadow: 4px 6px 5px 0px rgba(56,63,81,0.47); 
         }
 
 
@@ -148,44 +159,43 @@ nav{
             background-color: rgba(60, 79, 120, 0.70);
             padding: 2%;
             border: 3px solid #187795;
+            
         }
 
       
         .fish-pic{
             margin: 5px 0 0 0;
             width: 90%;
-            
-        }
-        a{
-            text-decoration: none;
         }
 
-        .fish-details, p{
-            padding: 10px;
-            width: 300px;
-            margin: 4% auto;
-            word-wrap: normal;
-            text-align: left;  
-            line-height: 1.2em;
-            background-color: rgba(121, 183, 145, 0.424);
-            border: 1px solid rgba(121, 183, 145, 0.9);
+        p{
+            border:none
+        }
+        #sci-name{
+            text-align: center;
+            font-style: italic;
+            font-size: 1.6em;
         }
 
-        #name{
-            /* padding: ; */
+
+        #name, .name-details{
+            margin: 0 auto;
+            margin-bottom: 7%;
+            width: 80%;
             text-transform: capitalize;
-            font-size: 1.6em;
-            margin-bottom: 3px;
+            font-size: 1.4em;
+           
+            padding: 3px 3px;
+            background-color: rgba(218, 218, 217, 0.5);
+            border-radius: 32px 32px 32px 32px;
+            -moz-border-radius: 32px 32px 32px 32px;
+            -webkit-border-radius: 32px 32px 32px 32px;
+            border: 1px solid rgba(121, 183, 145, 0.9);
+            font-family: 'Raleway', sans-serif;
         }
 
 
-       h4#name-details{
-            margin: 10px;
-            font-size: 1.6em;
-            font-weight: bolder;
-            
-        }
-
+       
         #fish-pic-details{
             margin: 2vh;
             width: 90%;
@@ -197,6 +207,9 @@ nav{
             margin: 4% auto;
             background-color: rgba(121, 183, 145, 0.424);
             border: 1px solid rgba(121, 183, 145, 0.9);
+            -webkit-box-shadow: 3px 4px 5px 0px #383F51;
+            -moz-box-shadow: 3px 4px 5px 0px #383F51;
+            box-shadow: 3px 4px 5px 0px #383F51;
         }
         .accordion{
             position: relative;
@@ -208,8 +221,10 @@ nav{
             position: relative;
             width: 100%;
             height: auto;
-            background-color: white;
+            background-color: #DADAD9;
+            
         }
+        
         .set > a{
             display: block;
             padding: 10px 15px;
@@ -222,19 +237,36 @@ nav{
             transition:all 0.2s linear;
         }
         .set > a.active{
-            background-color: white;
+            background-color: rgba(234, 237, 234, 0.5);
             color: black;
+            -webkit-box-shadow: 4px 6px 5px 0px rgba(56,63,81,0.47);
+            -moz-box-shadow: 4px 6px 5px 0px rgb(56, 63, 81);
+            box-shadow: 4px 6px 5px 0px rgba(56,63,81,0.47);
         }
-
         .content{
-            background-color: green;
             border-bottom: 1px solid black;
             display: none;
+            /* background-color: rgba(60, 79, 120, 0.70); */
         }
         .content p{
             padding: 10px 15px;
             margin: 0;
-            color: blue;
+            color: black;
+            font-family: 'Hind Madurai', sans-serif;
+            text-align: left;
+            background-color:  #85AFBB;
+        }
+        .stretch-container{
+            background-color:  #85AFBB;
+
+        }
+        #sustain-border{
+            border-bottom: none;
+
+        }
+        a.fish-path-button{
+            color: black;
+            text-decoration: none;
         }
 
     
