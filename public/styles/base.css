@@ -198,7 +198,44 @@ nav{
             background-color: rgba(121, 183, 145, 0.424);
             border: 1px solid rgba(121, 183, 145, 0.9);
         }
-        
+        .accordion{
+            position: relative;
+            max-width: 400px;
+            height: auto;
+            margin: 10px auto
+        }
+        .set{
+            position: relative;
+            width: 100%;
+            height: auto;
+            background-color: white;
+        }
+        .set > a{
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            border-bottom: 1px solid black;
+            -webkit-transition:all 0.2s linear;
+            -moz-transition:all 0.2s linear;
+            transition:all 0.2s linear;
+        }
+        .set > a.active{
+            background-color: white;
+            color: black;
+        }
+
+        .content{
+            background-color: green;
+            border-bottom: 1px solid black;
+            display: none;
+        }
+        .content p{
+            padding: 10px 15px;
+            margin: 0;
+            color: blue;
+        }
 
     
     }

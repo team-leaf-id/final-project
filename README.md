@@ -38,4 +38,6 @@ We're using regex to filter the text bing displayed to the user.
 METALLIC SEAWEED: #187795
 ISABELLINE: #EAEDEA
 CHARCOAL: #383F51
-INDIPENDENCE:#3C4F78 -->
+INDIPENDENCE:#3C4F78 
+LOGO WHITE: #DADAD9
+-->
