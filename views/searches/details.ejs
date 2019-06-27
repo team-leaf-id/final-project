@@ -5,30 +5,102 @@
   <%- include('../layout/header')%>
   <main>
     <section class="fish-container">
+      
       <ul id="fish-details">
         <li data-id="<%= fishBanana.path %>">
-          <img src="<%=fishBanana.image_url%>">
+          <img id="fish-pic-details" src="<%=fishBanana.image_url%>"> 
           <h4>Name: <%= fishBanana.species_name%></h4>
-          <p>Also known as: <%= fishBanana.scientific_name%></p>       
+      <div class="accordion">
+        <div class="set">
+          <a href="#">
+            Scientific Name
+          </a>
+        <div class="content">
+          <p> <%= fishBanana.scientific_name%></p>  
+        </div>
+      </div>
+         <div class="set">
+            <a href="#">
+              Sustainability Status
+            </a>
+          <div class="content">
           <p>Sustainability status: <%= fishBanana.quote%></p>
-          <p>Habitat: <%= fishBanana.habitat%>
+         </div> 
+             <div class="content">
+      <section class="stretch-container" data-id="optionBanana">
+          <img src="<%= optionBanana.image %>" alt="">
+          <p><%= optionBanana.text %></p>
+          <% optionBanana.data.forEach(option => { %>
+            <a href="<%= option.path%>" target="_blank">
+              <p><%= option.name %></p>
+            </a>
+            <% }) %>
+       </section>
+        </div>
+      </div>
+        <div class="set">
+            <a href="#"> 
+              Habitat
+            </a>
+          <div class="content">
+          <p>Habitat: <%= fishBanana.habitat%></p>
+          </div> 
+        </div>
+        <div class="set">
+            <a href="#">
+              Habitat Impact
+            </a>
+          <div class="content">
           <p>Habitat Impact: <%= fishBanana.habitat_impacts %></p>
+        </div> 
+      </div>
+      <div class="set">
+          <a href="#">
+            Location
+          </a>
+          <div class="content">
           <p>Location: <%= fishBanana.location %></p>
+        </div> 
+      </div>
+      <div class="set">
+          <a href="#">
+            Population
+          </a>
+          <div class="content">
           <p>Population: <%= fishBanana.population %></p>
+        </div> 
+      </div>
+      <div class="set">
+          <a href="#">
+            Availability
+          </a>
+          <div class="content">
           <p>Availability: <%= fishBanana.availability %></p>
+        </div> 
+      </div>
+       <div class="set">
+          <a href="#">
+            Physical Description
+          </a>
+          <div class="content">
           <p>Physical description: <%= fishBanana.physical_description %></p>
+        </div> 
+      </div>
+      <div class="set">
+          <a href="#">
+            Source
+          </a>
+          <div class="content">
           <p>Source: <%= fishBanana.source %></p>
-        </li>
+        </div> 
+      </div>
+      
+    </div>
+  </div>
+          </li>
       </ul>
-    </section>
-    <section class="stretch-container" data-id="optionBanana">
-      <img src="<%= optionBanana.image %>" alt="">
-      <p><%= optionBanana.text %></p>
-      <% optionBanana.data.forEach(option => { %>
-        <a href="<%= option.path%>" target="_blank">
-          <p><%= option.name %></p>
-        </a>
-      <% }) %>
+
+     
     </section>
   </main>
   <%- include('../layout/footer')%>
