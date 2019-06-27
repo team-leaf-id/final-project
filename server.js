@@ -143,15 +143,15 @@ function sustainabilityCheck(fishInfo){
   })
   if (tick === true){
     console.log('147 - TICK SUSTAINABLE, INCLUDES PHRASES');
-    //TODO: This can be problematic if there aren't any recipes for this particular fish. Any ideas?
-    let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
+    let text = 'You have picked a sustainable and smart seafood choice!';
     let image = 'https://via.placeholder.com/150'; //TODO: Yoshi's images will go here
     return findRecipes(fishInfo, text, image);
   } else {
     console.log('152 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
-    let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
+    let text = 'Unfortunately, this is not a smart seafood choice.';
+    let phrase = 'Check out these other fish:';
     let image = 'https://via.placeholder.com/50'; //TODO: Yoshi's image will go here
-    return findAlt(fishInfo, text, image);
+    return findAlt(fishInfo, text, phrase, image);
   }
 }
 
@@ -163,7 +163,13 @@ function findRecipes(fishInfo, text, image){
   return superagent.get(url)
     .then(results => organizeRecipe(results))
     .then(organizedResults => {
-      return {text: text, image: image, data: organizedResults};
+      let phrase;
+      if (organizedResults.length < 1){
+        phrase = 'Unfortunately, we couldn\'t find any recipes at this time. Try searching for another fish!';
+      } else {
+        phrase = 'Here are some recipes we found:';
+      }
+      return {text: text, image: image, phrase: phrase, data: organizedResults};
     })
 }
 
@@ -179,7 +185,7 @@ function organizeRecipe(results){
   return organizedRecipes;
 }
 
-function findAlt(fishInfo, text, image){
+function findAlt(fishInfo, text, phrase, image){
   let keywords = findTasteTextureKeywords(fishInfo);
   console.log('166 - IN ALT FUNCTION, KEYWORDS:', keywords);
 
@@ -189,7 +195,7 @@ function findAlt(fishInfo, text, image){
     .then(results => organizeResults(results))
     .then(finalResults => {
       console.log('192 - FINAL RESULTS', finalResults);
-      return {text: text, image: image, data: finalResults};
+      return {text: text, image: image, phrase: phrase, data: finalResults};
     })
 }
 
