@@ -4,7 +4,7 @@
 <body>
   <%- include('../layout/header')%>
   <main class="fish-container">
-    <ul>
+    <ul class="fish-list">
       <% results.forEach(fish => { %>
       <a class="fish-path-button" href="/searches/details<%= fish.path%>">
         <div class="fish-div">
@@ -16,9 +16,6 @@
       <% }) %>
     </ul>
 
-
-
-    
   </main>
   <%- include('../layout/footer')%>
 </body>

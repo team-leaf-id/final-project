@@ -11,7 +11,7 @@ border: solid 2px black;
     overflow: hidden;
 } */
 
-h1{
+h1 {
 
 }
 nav{
@@ -271,3 +271,196 @@ nav{
 
     
     }
+
+
+
+
+
+
+
+/* -------------------------- DESKTOP VIEW ----------------------------- */
+
+@media only screen and (min-device-width: 668px){
+
+    * {
+        -webkit-box-sizing: border-box !important;
+        -moz-box-sizing: border-box !important;
+        box-sizing: border-box !important;
+        text-align: center;
+        border: none;
+    }
+
+    body{
+        /* margin: 0 auto; */
+        background-image: url("../img/background-desktop.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        width: 960px;
+        /* border: 5px solid black; */
+        overflow: hidden;
+        margin: 0 auto;
+    }
+    
+    .firstWord{
+        font-weight: bolder;
+    }
+
+    .search-box{
+        display: none;
+        margin: 0 auto;         
+        width: 90%;
+        background-color: rgba(60, 79, 120, 0.40);
+        padding: 26px 0 26px 0;
+        border: 3px solid #187795;
+    }
+
+    #search-field{
+        padding: 5px 10px 5px 10px;
+        border-radius: 67px 67px 67px 67px;
+        -moz-border-radius: 67px 67px 67px 67px;
+        -webkit-border-radius: 67px 67px 67px 67px;
+        border: 1px solid #f5f5f5;
+        margin: 15px;
+    }
+
+    nav.top-bar{
+        top: 0;
+        position: absolute;
+        width: 40%;
+        max-height: 30vh;
+        background-color: #3C4F78;
+        clip-path: polygon(0 0, 100% 0, 85% 20%, 15% 20%); 
+    }
+
+    div.logo-box{
+        height: 50vh;
+        margin: 25% auto;   
+    }
+
+    img#logo{
+        width: 33%;
+        z-index: -50;
+        -webkit-box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
+        -moz-box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
+        box-shadow: 0px 10px 57px -6px rgba(61,68,102,1);
+    }   
+
+    header{
+        display: flex;
+        justify-content: center;
+        align-items: center;  
+    }
+
+    .fish-container, .fish-container-details, .about-container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly; 
+        margin: 7% auto;
+        width: 90%;
+        height: 85vh;
+        overflow-y: auto;
+        /* position: fixed; */
+        background-color: rgba(60, 79, 120, 0.70);
+        padding-top: 2%;
+        border: 3px solid #187795;
+    }
+
+    .fish-list {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-evenly;
+    }
+
+    .fish-pic{
+        margin: 5px 0 0 0;
+        width: 90%;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .fish-details, p{
+        padding: 10px;
+        width: 300px;
+        margin: 4% auto;
+        word-wrap: normal;
+        text-align: left;  
+        line-height: 1.2em;
+        background-color: rgba(121, 183, 145, 0.424);
+        border: 1px solid rgba(121, 183, 145, 0.9);
+    }
+
+    #name{
+        /* padding: ; */
+        text-transform: capitalize;
+        font-size: 1.6em;
+        margin-bottom: 3px;
+    }
+
+
+    h4#name-details{
+        margin: 10px;
+        font-size: 1.6em;
+        font-weight: bolder;
+        
+    }
+
+    #fish-pic-details{
+        margin: 2vh;
+        width: 90%;
+    }
+
+    .fish-div, .about-list {
+        line-height: 1.6em;
+        width: 340px;
+        height: 220px;
+        margin: 4% auto;
+        padding: 2%;
+        background-color: rgba(121, 183, 145, 0.424);
+        border: 1px solid rgba(121, 183, 145, 0.9);
+        align-content: center;
+    }
+
+    .accordion{
+        position: relative;
+        max-width: 400px;
+        height: auto;
+        margin: 10px auto
+    }
+    .set{
+        position: relative;
+        width: 100%;
+        height: auto;
+        background-color: white;
+    }
+    .set > a{
+        display: block;
+        padding: 10px 15px;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        border-bottom: 1px solid black;
+        -webkit-transition:all 0.2s linear;
+        -moz-transition:all 0.2s linear;
+        transition:all 0.2s linear;
+    }
+    .set > a.active{
+        background-color: white;
+        color: black;
+    }
+
+    .content{
+        background-color: green;
+        border-bottom: 1px solid black;
+        display: none;
+    }
+    .content p{
+        padding: 10px 15px;
+        margin: 0;
+        color: blue;
+    }
+
+
+}
