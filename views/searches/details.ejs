@@ -9,24 +9,24 @@
       <ul id="fish-details">
         <li data-id="<%= fishBanana.path %>">
           <img id="fish-pic-details" src="<%=fishBanana.image_url%>"> 
-          <h4><%= fishBanana.species_name%></h4>
+          <h4 class="name-details"> <%= fishBanana.species_name%></h4>
       <div class="accordion">
         <div class="set">
           <a href="#">
             Scientific Name
           </a>
         <div class="content">
-          <p> <%= fishBanana.scientific_name%></p>  
+          <p id="sci-name"> <%= fishBanana.scientific_name%></p>  
         </div>
       </div>
          <div class="set">
             <a href="#">
               Sustainability Status
             </a>
-          <div class="content">
+          <div id="sustain-border" class="content">
           <p>Sustainability status: <%= fishBanana.quote%></p>
          </div> 
-             <div class="content">
+             <div  class="content">
       <section class="stretch-container" data-id="optionBanana">
           <img src="<%= optionBanana.image %>" alt="">
           <p><%= optionBanana.text %></p>
