@@ -130,7 +130,7 @@ function getFishDetails(request, response){
     })
     .then(totalData => {
       console.log('116 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
-      response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option })
+      response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option });
     })
     .catch(error => handleError(error, response));
 }
@@ -148,7 +148,7 @@ function sustainabilityCheck(fishInfo){
     console.log('133 - TICK SUSTAINABLE, INCLUDES PHRASES');
     let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
     let image = 'https://via.placeholder.com/150'; //Yoshi's images will go here
-    return {text: text, image: image};
+    return Promise.resolve({text: text, image: image});
   } else {
     console.log('136 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
     let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
@@ -208,11 +208,6 @@ function Fish(result){
   this.color = result['Color'] ? result['Color'] :'no color information available' ;
   this.physical_description = result['Physical Description'] ? result['Physical Description'] :'no physical description information available' ;
   this.source = result['Source'] ? result['Source'] :'no source information available' ;
-}
-
-function handleError(error, response){
-  console.error(error);
-  response.status(500).send('Sorry, something went wrong')
 }
 
 app.listen(PORT, () => console.log(`listening on ${PORT}`));
