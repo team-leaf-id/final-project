@@ -107,36 +107,33 @@ function searchFish(request, response){
 function getFishDetails(request, response){
   const url = `https://www.fishwatch.gov/api/species/${request.params.path}`;
   let regex = /<ul>\s<li>|<li>|<\/li>| <\/ul>|<p>|<\/p>|&[a-z][a-z][a-z][a-z];|\/n|&[a-z][a-z][a-z][a-z];<\/li><\/ul>|<ul>\s<li>|\s<\/ul>|<em>|<\/em>/gmi;
-
+  console.log('110 - IN GET FISH DETAILS FUNCTION, PATH IS:', request.params.path);
   superagent.get(url)
     .then(results => {
       const fishInstances = results.body.map(detailFishResult=>{
-        // console.log('checking return', detailFishResult)
         let fishFish = new Fish(detailFishResult);
         for (const detail in fishFish) {
           fishFish[detail] = fishFish[detail].replace(regex, '');
         }
-        // console.log('checking fishfish!!!!', fishFish);
         return fishFish;
       })
       return fishInstances;
     })
     .then(results => {
-      console.log('111 - IN AREA TO RUN SUSTAINABILITY CHECK');
+      console.log('125 - IN AREA TO RUN SUSTAINABILITY CHECK');
       return sustainabilityCheck(results[0]).then(sustainabilityInfo => {
         return {fishData: results[0], option: sustainabilityInfo};
       });
-      // return {fishData: results[0], option: option};
     })
     .then(totalData => {
-      console.log('116 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
+      console.log('131 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
       response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option });
     })
     .catch(error => handleError(error, response));
 }
 
 function sustainabilityCheck(fishInfo){
-  console.log('123 - IN SUSTAINABILITY CHECK FUNCTION');
+  console.log('138 - IN SUSTAINABILITY CHECK FUNCTION');
   let tick;
   const sustainableTalk = ['smart seafood choice', 'sustainably managed', 'responsibly harvested'];
   sustainableTalk.forEach(phrase => {
@@ -145,33 +142,66 @@ function sustainabilityCheck(fishInfo){
     }
   })
   if (tick === true){
-    console.log('133 - TICK SUSTAINABLE, INCLUDES PHRASES');
+    console.log('147 - TICK SUSTAINABLE, INCLUDES PHRASES');
+    //TODO: This can be problematic if there aren't any recipes for this particular fish. Any ideas?
     let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
-    let image = 'https://via.placeholder.com/150'; //Yoshi's images will go here
-    return Promise.resolve({text: text, image: image});
+    let image = 'https://via.placeholder.com/150'; //TODO: Yoshi's images will go here
+    return findRecipes(fishInfo, text, image);
   } else {
-    console.log('136 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
+    console.log('152 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
     let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
-    let image = 'https://via.placeholder.com/50'; //Yoshi's image will go here
+    let image = 'https://via.placeholder.com/50'; //TODO: Yoshi's image will go here
     return findAlt(fishInfo, text, image);
-    // return {text: text, image: image, data: data};
   }
 }
 
-// function findRecipes(fishInfo){ //Which recipe API to use?
+function findRecipes(fishInfo, text, image){
+  let searchFish = fishInfo.path.replace('_', '-').slice(10);
+  console.log('162 - FIND RECIPE FUNCTION, SEARCH FISH:', searchFish);
+  let url = `https://api.edamam.com/search?q=${searchFish}&app_id=${process.env.RECIPE_ID}&app_key=${process.env.RECIPE_KEY}`;
 
-// }
+  return superagent.get(url)
+    .then(results => organizeRecipe(results))
+    .then(organizedResults => {
+      return {text: text, image: image, data: organizedResults};
+    })
+}
 
-function findAlt(fishInfo, text, image){ 
+function organizeRecipe(results){
+  let recipes = JSON.parse(results.text);
+  let organizedRecipes = [];
+  for(let i = 0; i < recipes.hits.length; i++){
+    organizedRecipes.push({
+      name: recipes.hits[i].recipe.label,
+      path: recipes.hits[i].recipe.url
+    });
+  }
+  return organizedRecipes;
+}
+
+function findAlt(fishInfo, text, image){
   let keywords = findTasteTextureKeywords(fishInfo);
-  console.log('160 - IN ALT FUNCTION, KEYWORDS:', keywords);
+  console.log('166 - IN ALT FUNCTION, KEYWORDS:', keywords);
 
   const SQL = `SELECT DISTINCT species_name, path FROM fish WHERE taste LIKE '%${keywords.taste[0]}%' AND texture LIKE '%${keywords.texture[0]}%';`;
 
   return client.query(SQL)
-    .then(results => {
-      return {text: text, image: image, data: results.rows};
+    .then(results => organizeResults(results))
+    .then(finalResults => {
+      console.log('192 - FINAL RESULTS', finalResults);
+      return {text: text, image: image, data: finalResults};
     })
+}
+
+function organizeResults(results){
+  let finalResults = [];
+  for (let i = 0; i < results.rows.length; i++){
+    finalResults.push({
+      name: results.rows[i].species_name,
+      path: `/searches/details${results.rows[i].path}`
+    });
+  }
+  return finalResults;
 }
 
 function findTasteTextureKeywords(fishInfo){
@@ -201,7 +231,6 @@ function Fish(result){
   this.population = result['Population'] ? result['Population'] :'no population information available' ;
   this.scientific_name = result['Scientific Name'] ? result['Scientific Name'] :'no Scientific Name available' ;
   this.availability = result['Availability'] ? result['Availability'] :'no availability information available' ;
-  // this.biology = result['Biology'] ? result['Biology'] :'no biology information available' ;
   this.quote = result['Quote'] ? result['Quote'] :'no information available' ;
   this.taste = result['Taste'] ? result['Taste'] :'no flavor information available' ;
   this.texture = result['Texture'] ? result['Texture'] :'no Texture information available' ;
