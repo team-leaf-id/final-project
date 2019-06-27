@@ -27,12 +27,22 @@ app.set('view engine', 'ejs');
 app.get('/', renderHomePage);
 app.post('/searches', searchFish);
 app.get('/searches/details/:path', getFishDetails);
+app.get('/about', renderAboutPage);
+app.get('/links', renderLinksPage);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
 function renderHomePage(request, response){
   getFish(request, response);
   response.render('pages/index');
+}
+
+function renderAboutPage(request, response){
+  response.render('pages/about');
+}
+
+function renderLinksPage(request, response){
+  response.render('pages/links');
 }
 
 function getFish(request, response){

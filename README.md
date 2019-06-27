@@ -1,12 +1,6 @@
 # final-project
 
-
 FISH FACE -- AN APP 
-
-
-
-
-
 
 # Project Name
 
