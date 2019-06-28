@@ -338,9 +338,10 @@ nav{
             border-bottom: none;
 
         }
-        a{
+        
+        a {
             color: black;
-            text-decoration: none;
+            text-decoration: underline;
         }
 
         button {
