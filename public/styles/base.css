@@ -260,6 +260,11 @@ nav{
             background-color:  #85AFBB;
 
         }
+
+        .alt-fish-name {
+
+            text-transform: capitalize;
+        }
         #sustain-border{
             border-bottom: none;
 
@@ -297,6 +302,8 @@ nav{
         background-attachment: fixed;
         background-size: cover;
         width: 960px;
+        font-family: 'Raleway', sans-serif;
+
         /* border: 5px solid black; */
         overflow: hidden;
         margin: 0 auto;
@@ -452,7 +459,10 @@ nav{
     }
 
     .content{
-        /* background-color: green; */
+
+
+        background-color: rgba(121, 183, 145, 0.424);
+ master
         border-bottom: 1px solid black;
         display: none;
     }
@@ -460,17 +470,60 @@ nav{
         padding: 10px 15px;
         margin: 0;
         color: blue;
-        font-family: 'Hind Madurai', sans-serif;
-        text-align: left;
-        background-color:  #85AFBB;
 
+        width: 100%;
     }
-    #sustain-border{
-        border-bottom: none;
+    .links-container h4{
+        margin: 10px;
+        font-size: 25px;
     }
-    a{
-        color: black;
-        text-decoration: none;
-    }
+    button {
+        border: none;
+        cursor: pointer;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 8px;
+        font-size: 15px;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
+        background: #1F4055;
+        font-family: 'Raleway', sans-serif;
+        position: relative;
+        overflow: hidden;
+
+      }
+
+      button:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4px;
+        height: 2px;
+        background: rgba(255, 255, 255, .5);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%);
+        transform-origin: 50% 50%;
+      }
+      
+      @keyframes ripple {
+        0% {
+          transform: scale(0, 0);
+          opacity: 1;
+        }
+        20% {
+          transform: scale(25, 25);
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: scale(40, 40);
+        }
+      }
+      
+      button:focus:not(:active)::after {
+        animation: ripple 1s ease-out;
+      }
+
 
 }
