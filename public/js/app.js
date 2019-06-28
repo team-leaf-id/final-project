@@ -28,5 +28,4 @@ $(document).ready(function() {
         .slideDown(200);
     }
   });
-
 });
