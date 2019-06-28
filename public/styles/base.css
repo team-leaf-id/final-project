@@ -264,7 +264,7 @@ nav{
             border-bottom: none;
 
         }
-        a.fish-path-button{
+        a{
             color: black;
             text-decoration: none;
         }
@@ -452,7 +452,7 @@ nav{
     }
 
     .content{
-        background-color: green;
+        /* background-color: green; */
         border-bottom: 1px solid black;
         display: none;
     }
@@ -460,7 +460,17 @@ nav{
         padding: 10px 15px;
         margin: 0;
         color: blue;
-    }
+        font-family: 'Hind Madurai', sans-serif;
+        text-align: left;
+        background-color:  #85AFBB;
 
+    }
+    #sustain-border{
+        border-bottom: none;
+    }
+    a{
+        color: black;
+        text-decoration: none;
+    }
 
 }
