@@ -136,7 +136,6 @@ function getFishDetails(request, response){
       });
     })
     .then(totalData => {
-      console.log('131 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
       response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option });
     })
     .catch(error => handleError(error, response));
@@ -197,14 +196,11 @@ function organizeRecipe(results){
 
 function findAlt(fishInfo, text, phrase, image){
   let keywords = findTasteTextureKeywords(fishInfo);
-  console.log('166 - IN ALT FUNCTION, KEYWORDS:', keywords);
-
   const SQL = `SELECT DISTINCT species_name, path FROM fish WHERE taste LIKE '%${keywords.taste[0]}%' AND texture LIKE '%${keywords.texture[0]}%';`;
 
   return client.query(SQL)
     .then(results => organizeResults(results))
     .then(finalResults => {
-      console.log('192 - FINAL RESULTS', finalResults);
       return {text: text, image: image, phrase: phrase, data: finalResults};
     })
 }

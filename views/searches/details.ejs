@@ -30,9 +30,10 @@
       <section class="stretch-container" data-id="optionBanana">
           <img src="<%= optionBanana.image %>" alt="">
           <p><%= optionBanana.text %></p>
+          <p><%= optionBanana.phrase %></p>
           <% optionBanana.data.forEach(option => { %>
-            <a href="<%= option.path%>" target="_blank">
-              <p><%= option.name %></p>
+            <a href="<%= option.path%>">
+              <p class="alt-fish-name"><%= option.name %></p>
             </a>
             <% }) %>
        </section>

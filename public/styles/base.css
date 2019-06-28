@@ -260,6 +260,11 @@ nav{
             background-color:  #85AFBB;
 
         }
+
+        .alt-fish-name {
+
+            text-transform: capitalize;
+        }
         #sustain-border{
             border-bottom: none;
 
