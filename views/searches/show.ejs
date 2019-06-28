@@ -4,21 +4,18 @@
 <body>
   <%- include('../layout/header')%>
   <main class="fish-container">
-    <ul>
+    <ul class="fish-list">
       <% results.forEach(fish => { %>
+      <a class="fish-path-button" href="/searches/details<%= fish.path%>">
         <div class="fish-div">
-          <a class="fish-path-button" href="/searches/details<%= fish.path%>">
             <img class="fish-pic" src="<%= fish.image_url %>" alt="">
             <hr>
-             </a>
              <li id="name"><%= fish.species_name %></li>
         </div>
+      </a>
       <% }) %>
     </ul>
 
-
-
-    
   </main>
   <%- include('../layout/footer')%>
 </body>

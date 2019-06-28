@@ -27,12 +27,22 @@ app.set('view engine', 'ejs');
 app.get('/', renderHomePage);
 app.post('/searches', searchFish);
 app.get('/searches/details/:path', getFishDetails);
+app.get('/about', renderAboutPage);
+app.get('/links', renderLinksPage);
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
 // Helper function
 function renderHomePage(request, response){
   getFish(request, response);
   response.render('pages/index');
+}
+
+function renderAboutPage(request, response){
+  response.render('pages/about');
+}
+
+function renderLinksPage(request, response){
+  response.render('pages/links');
 }
 
 function getFish(request, response){
@@ -126,7 +136,6 @@ function getFishDetails(request, response){
       });
     })
     .then(totalData => {
-      console.log('131 - IN AREA TO RENDER, OPTIONS ARE:', totalData.option);
       response.render('searches/details', { fishBanana: totalData.fishData, optionBanana: totalData.option });
     })
     .catch(error => handleError(error, response));
@@ -143,15 +152,15 @@ function sustainabilityCheck(fishInfo){
   })
   if (tick === true){
     console.log('147 - TICK SUSTAINABLE, INCLUDES PHRASES');
-    //TODO: This can be problematic if there aren't any recipes for this particular fish. Any ideas?
-    let text = 'You have picked a sustainable and smart seafood choice! Here are some recipes:';
+    let text = 'You have picked a sustainable and smart seafood choice!';
     let image = 'https://via.placeholder.com/150'; //TODO: Yoshi's images will go here
     return findRecipes(fishInfo, text, image);
   } else {
     console.log('152 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
-    let text = 'Unfortunately, this is not a smart seafood choice. Here are other fish that you may enjoy:';
+    let text = 'Unfortunately, this is not a smart seafood choice.';
+    let phrase = 'Check out these other fish:';
     let image = 'https://via.placeholder.com/50'; //TODO: Yoshi's image will go here
-    return findAlt(fishInfo, text, image);
+    return findAlt(fishInfo, text, phrase, image);
   }
 }
 
@@ -163,7 +172,13 @@ function findRecipes(fishInfo, text, image){
   return superagent.get(url)
     .then(results => organizeRecipe(results))
     .then(organizedResults => {
-      return {text: text, image: image, data: organizedResults};
+      let phrase;
+      if (organizedResults.length < 1){
+        phrase = 'Unfortunately, we couldn\'t find any recipes at this time. Try searching for another fish!';
+      } else {
+        phrase = 'Here are some recipes we found:';
+      }
+      return {text: text, image: image, phrase: phrase, data: organizedResults};
     })
 }
 
@@ -179,17 +194,14 @@ function organizeRecipe(results){
   return organizedRecipes;
 }
 
-function findAlt(fishInfo, text, image){
+function findAlt(fishInfo, text, phrase, image){
   let keywords = findTasteTextureKeywords(fishInfo);
-  console.log('166 - IN ALT FUNCTION, KEYWORDS:', keywords);
-
   const SQL = `SELECT DISTINCT species_name, path FROM fish WHERE taste LIKE '%${keywords.taste[0]}%' AND texture LIKE '%${keywords.texture[0]}%';`;
 
   return client.query(SQL)
     .then(results => organizeResults(results))
     .then(finalResults => {
-      console.log('192 - FINAL RESULTS', finalResults);
-      return {text: text, image: image, data: finalResults};
+      return {text: text, image: image, phrase: phrase, data: finalResults};
     })
 }
 
