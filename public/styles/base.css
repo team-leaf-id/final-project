@@ -174,7 +174,7 @@ nav{
 
         }
 
-        .links-container {
+        .links-container, .about-container {
             justify-content: space-evenly; 
             margin: 20% 5%;
             width: 50vh;
@@ -240,7 +240,8 @@ nav{
         }
 
 
-        .links-list {
+        .links-list, .about-list {
+
             line-height: 1.6em;
             width: 300px;
             margin: 6% auto;
@@ -430,8 +431,34 @@ nav{
         color: black;
         background: rgba(102,51,255,0.2);
         }
-          
+        .about-list img{
+            /* border: 1px solid blueviolet; */
+            line-height: 100%;
+            }
+            .about-container h1{
+                display: block;
+                width: 100%;
+            }
+
+              .devDescription{
+                padding: 8px;
+              }
+              #jo{
+                  width: 65%;
+                  margin-top:25px;
+              }
+        
+              #yosh{
+                  width:60%;
+                  margin-top:15px;
+              }
+              #raven{
+                  width:50%;
+              }
+              
     }
+          
+    
 
 
 
