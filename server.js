@@ -153,13 +153,13 @@ function sustainabilityCheck(fishInfo){
   if (tick === true){
     console.log('147 - TICK SUSTAINABLE, INCLUDES PHRASES');
     let text = 'You have picked a sustainable and smart seafood choice!';
-    let image = 'https://via.placeholder.com/150'; //TODO: Yoshi's images will go here
+    let image = '/img/good-fish.png'; //TODO: Yoshi's images will go here
     return findRecipes(fishInfo, text, image);
   } else {
     console.log('152 - TICK IS FALSE, NOT SUSTAINABLE, DOES NOT INCLUDE PHRASE');
     let text = 'Unfortunately, this is not a smart seafood choice.';
     let phrase = 'Check out these other fish:';
-    let image = 'https://via.placeholder.com/50'; //TODO: Yoshi's image will go here
+    let image = '/img/bad-fish.png'; //TODO: Yoshi's image will go here
     return findAlt(fishInfo, text, phrase, image);
   }
 }
