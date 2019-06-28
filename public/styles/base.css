@@ -302,7 +302,95 @@ nav{
             text-decoration: none;
         }
 
+        button {
+            border: none;
+            cursor: pointer;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 8px;
+            font-size: 15px;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
+            background: #1F4055;
+            font-family: 'Raleway', sans-serif;
+            position: relative;
+            overflow: hidden;
     
+          }
+    
+          button:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 2px;
+            background: rgba(255, 255, 255, .5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+          }
+          
+          @keyframes ripple {
+            0% {
+              transform: scale(0, 0);
+              opacity: 1;
+            }
+            20% {
+              transform: scale(25, 25);
+              opacity: 1;
+            }
+            100% {
+              opacity: 0;
+              transform: scale(40, 40);
+            }
+          }
+          
+          button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+          }
+          .tabs__item {
+            width: 100%;
+            float: left;
+        }
+    
+        .tabs__link {
+            display: block; 
+        }
+    
+    
+        .tabs {
+            margin:  0;
+            padding: 0;
+            list-style: none;
+            display: table; 
+            table-layout: fixed; 
+            width: 100%; 
+        }
+    
+        .primary-nav {
+        text-align: center;
+        border-radius: 0;
+        overflow: hidden; 
+        }
+    
+        .primary-nav a {
+        padding: .75em 1em;
+         color: white;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        text-decoration: none;
+        border-right: 1px solid #000;
+        font-family: Share, Helvetica, Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        }
+    
+        .primary-nav a:hover {
+        color: black;
+        background: rgba(102,51,255,0.2);
+        }
+          
     }
 
 
@@ -439,7 +527,7 @@ nav{
     }
 
     #name{
-        /* padding: ; */
+      
         text-transform: capitalize;
         font-size: 1.6em;
         margin-bottom: 3px;
@@ -605,7 +693,7 @@ nav{
     .primary-nav {
     text-align: center;
     border-radius: 0;
-    overflow: hidden; /* [1] */
+    overflow: hidden; 
     }
 
     .primary-nav a {
@@ -624,5 +712,43 @@ nav{
     color: black;
     background: rgba(102,51,255,0.2);
     }
-}
+    .about-list img{
+        float: right;
+        border: 1px solid blueviolet;
+        line-height: 100%;
+        }
+        .about-container h1{
+            display: block;
+            width: 100%;
+        }
+          .about-list:hover{
+          transform: scale(1.1); 
+          }
+          .about-list{
+            text-align: right;
+            font-size: 14px;
+            transition: transform .2s;
+            margin: 5px;
+            width:45%;
+          }
+          .devDescription{
+            padding: 8px;
+          }
+          #jo{
+              width: 65%;
+              margin-top:25px;
+          }
+    
+          #yosh{
+              width:60%;
+              margin-top:15px;
+          }
+          #raven{
+              width:50%;
+          }
+          .about-container h1 {
+              font-family: 'Gothic A1', sans-serif;
+              font-size: 50px;
 
+          }
+}
