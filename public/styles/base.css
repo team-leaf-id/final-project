@@ -269,7 +269,7 @@ nav{
             border-bottom: none;
 
         }
-        a.fish-path-button{
+        a{
             color: black;
             text-decoration: none;
         }
@@ -460,7 +460,10 @@ nav{
     }
 
     .content{
+
+
         background-color: rgba(121, 183, 145, 0.424);
+ master
         border-bottom: 1px solid black;
         display: none;
     }
@@ -468,6 +471,7 @@ nav{
         padding: 10px 15px;
         margin: 0;
         color: blue;
+
         width: 100%;
     }
     .links-container h4{
@@ -522,6 +526,7 @@ nav{
         animation: ripple 1s ease-out;
       }
 
+
     .tabs__item {
         width: 100%;
         float: left;
@@ -570,3 +575,4 @@ nav{
     background: rgba(102,51,255,0.2);
     }
 }
+
